@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Session Saver Options</title>
+  <style>
+    body { font-family: "Segoe UI", Arial, sans-serif; margin: 24px; max-width: 540px; }
+    h2 { color: #2563eb; }
+    button { margin: 8px 0; padding: 6px 18px; font-size: 1em; border-radius: 5px; border: none; background: #2563eb; color: #fff; cursor: pointer; }
+    button:disabled { background: #a1a1aa !important; cursor: not-allowed; opacity: 0.7;}
+    button:hover:not(:disabled) { background: #1e40af; }
+    input[type="file"] { margin-top: 8px; }
+    .msg { margin-top: 12px; font-size: 1em; }
+    .success { color: #059669; }
+    .error { color: #b91c1c; }
+    .section { margin-bottom: 28px; }
+    ul { margin-top: 0; }
+    .import-label { display: block; margin-bottom: 6px; }
+    .export-list { border: 1px solid #e5e7eb; border-radius: 6px; padding: 10px; margin-bottom: 8px; max-height: 200px; overflow-y: auto; background: #f9fafb; }
+    .export-list label { margin-left: 6px; }
+    .export-label { font-weight: 500; margin-bottom: 5px; display: block; }
+  </style>
+</head>
+<body>
+  <h2>Import / Export Sessions</h2>
+  <div class="section">
+    <strong>Export Sessions</strong>
+    <ul>
+      <li>
+        <b>Export All:</b> Download a backup of all your saved sessions as <code>sessions-backup.json</code>.
+      </li>
+      <li>
+        <b>Export Selected:</b> Choose which sessions to export to a file.
+      </li>
+    </ul>
+    <div class="export-label">Select sessions to export:</div>
+    <div id="exportSessionList" class="export-list"></div>
+    <button id="exportAllBtn">Export All Sessions</button>
+    <button id="exportSelectedBtn">Export Selected Sessions</button>
+  </div>
+  <div class="section">
+    <strong>Import Sessions</strong>
+    <ul>
+      <li>Select a previously exported <code>.json</code> session backup file to add its sessions to your current list.</li>
+      <li><b>Note:</b> If a session in the file has the same name as an existing session, it will be imported with the filename appended (e.g. <code>My Session (backup.json)</code>).</li>
+    </ul>
+    <label for="importFile" class="import-label">Choose backup file to import:</label>
+    <input type="file" id="importFile" accept=".json" />
+    <button id="importBtn">Import Sessions</button>
+  </div>
+  <div id="msg" class="msg"></div>
+  <script src="options.js"></script>
+</body>
+</html>

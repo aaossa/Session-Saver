@@ -6,6 +6,7 @@
 - Easily select or unselect all tabs before saving.
 - Rename your saved sessions directly from the list.
 - Manage your sessions with a clean and modern popup interface.
+- Import/export sessions via a JSON file.
 
 ## Preview
 
@@ -19,6 +20,7 @@
 - **Rename Sessions:** Edit a session name from the session list using the pencil button, then press Enter or the checkmark to save.
 - **Select/Unselect All:** Quickly select or deselect all tabs with one click.
 - **Modern UI:** Clean, responsive popup with polished styles.
+- **Import/export Sessions:** Export your session data as a backup (`sessions-backup.json`) and import it later via the Options page (click ⚙️ Options in the popup).
 
 
 ## Installation on Chrome / Firefox (Manual)
@@ -103,6 +105,7 @@ Add these PNGs to your project root.
             "128": "icons/icon128.png"
         }
     },
+    "options_page": "options.html",
     "icons":
     {
         "16": "icons/icon16.png",

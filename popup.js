@@ -279,3 +279,12 @@ document.getElementById('sessions').addEventListener('click', async e => {
     refreshUI();
   }
 });
+
+document.getElementById('openOptions').addEventListener('click', e => {
+  e.preventDefault();
+  if (chrome.runtime.openOptionsPage) {
+    chrome.runtime.openOptionsPage();
+  } else {
+    window.open(chrome.runtime.getURL('options.html'));
+  }
+});
