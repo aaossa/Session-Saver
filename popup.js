@@ -21,32 +21,46 @@ async function saveSessions(sessions) {
 
 function renderTabs(tabs) {
   const container = document.getElementById('tabs');
-  container.innerHTML = '';
+  container.textContent = '';
 
   // Select/Unselect all checkbox row
   const selectAllRow = document.createElement('div');
   selectAllRow.className = 'select-all-row';
-  selectAllRow.innerHTML = `
-    <input type="checkbox" id="selectAllTabs" checked style="margin-right:8px;" />
-    <label for="selectAllTabs" class="select-all-label">Select/Unselect All</label>
-  `;
+  const selectAllBox = document.createElement('input');
+  selectAllBox.type = 'checkbox';
+  selectAllBox.id = 'selectAllTabs';
+  selectAllBox.checked = true;
+  selectAllBox.style.marginRight = "8px";
+  const selectAllLabel = document.createElement('label');
+  selectAllLabel.htmlFor = 'selectAllTabs';
+  selectAllLabel.className = 'select-all-label';
+  selectAllLabel.textContent = "Select/Unselect All";
+  selectAllRow.appendChild(selectAllBox);
+  selectAllRow.appendChild(selectAllLabel);
   container.appendChild(selectAllRow);
 
   // Individual tab checkboxes
   tabs.forEach(tab => {
     const div = document.createElement('div');
     div.className = 'tab-row';
-    div.innerHTML = `
-      <input type="checkbox" class="tab-checkbox" id="tab-${tab.id}" checked />
-      <label for="tab-${tab.id}" title="${tab.url}">
-        ${tab.title}
-      </label>
-    `;
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.className = 'tab-checkbox';
+    checkbox.id = `tab-${tab.id}`;
+    checkbox.checked = true;
+
+    const label = document.createElement('label');
+    label.htmlFor = `tab-${tab.id}`;
+    label.title = tab.url;
+    label.textContent = tab.title;
+
+    div.appendChild(checkbox);
+    div.appendChild(label);
     container.appendChild(div);
   });
 
   // Handler for "Select/Unselect All"
-  const selectAllBox = document.getElementById('selectAllTabs');
   selectAllBox.addEventListener('change', () => {
     const allChecked = selectAllBox.checked;
     tabs.forEach(tab => {
@@ -60,7 +74,6 @@ function renderTabs(tabs) {
     checkbox.addEventListener('change', () => {
       const allChecked = tabs.every(tab2 => document.getElementById(`tab-${tab2.id}`).checked);
       selectAllBox.checked = allChecked;
-      // If at least one is unchecked, but not all, make selectAllBox indeterminate
       if (!allChecked && tabs.some(tab2 => document.getElementById(`tab-${tab2.id}`).checked)) {
         selectAllBox.indeterminate = true;
       } else {
@@ -70,55 +83,121 @@ function renderTabs(tabs) {
   });
 }
 
+function createSVGIcon(type) {
+  // Returns a SVG element for edit, save, cancel icons
+  const ns = "http://www.w3.org/2000/svg";
+  let svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", "0 0 16 16");
+  svg.setAttribute("fill", "none");
+  svg.style.width = "1em";
+  svg.style.height = "1em";
+  let path = document.createElementNS(ns, "path");
+  if (type === "edit") {
+    path.setAttribute("d", "M12.3 3.7l-1-1a1 1 0 0 0-1.4 0L4 8.6V12h3.4l5.9-5.9a1 1 0 0 0 0-1.4z");
+    path.setAttribute("stroke", "#222");
+    path.setAttribute("stroke-width", "1.2");
+    path.setAttribute("fill", "#fbbf24");
+  } else if (type === "save") {
+    path.setAttribute("d", "M4 8l3 3 5-5");
+    path.setAttribute("stroke", "#fff");
+    path.setAttribute("stroke-width", "2");
+    path.setAttribute("stroke-linecap", "round");
+    path.setAttribute("stroke-linejoin", "round");
+  } else if (type === "cancel") {
+    path.setAttribute("d", "M4 4l8 8M12 4L4 12");
+    path.setAttribute("stroke", "#fff");
+    path.setAttribute("stroke-width", "2");
+    path.setAttribute("stroke-linecap", "round");
+  }
+  svg.appendChild(path);
+  return svg;
+}
+
 function renderSessions(sessions) {
   const container = document.getElementById('sessions');
-  container.innerHTML = '';
+  container.textContent = '';
   Object.keys(sessions).forEach(name => {
     const div = document.createElement('div');
     div.className = 'session';
 
     if (renamingSession === name) {
-      // Render rename UI
-      div.innerHTML = `
-        <input type="text" class="session-rename-input" value="${name}" id="rename-input-${name}" />
-        <span>
-          <button class="icon-btn" data-action="save-rename" data-name="${name}" title="Save">
-            <svg viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <button class="icon-btn" data-action="cancel-rename" data-name="${name}" title="Cancel">
-            <svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4L4 12" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
-          </button>
-        </span>
-      `;
+      // Rename UI
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'session-rename-input';
+      input.value = name;
+      input.id = `rename-input-${name}`;
+
+      const btnSpan = document.createElement('span');
+
+      const saveBtn = document.createElement('button');
+      saveBtn.className = 'icon-btn';
+      saveBtn.dataset.action = "save-rename";
+      saveBtn.dataset.name = name;
+      saveBtn.title = "Save";
+      saveBtn.appendChild(createSVGIcon("save"));
+
+      const cancelBtn = document.createElement('button');
+      cancelBtn.className = 'icon-btn';
+      cancelBtn.dataset.action = "cancel-rename";
+      cancelBtn.dataset.name = name;
+      cancelBtn.title = "Cancel";
+      cancelBtn.appendChild(createSVGIcon("cancel"));
+
+      btnSpan.appendChild(saveBtn);
+      btnSpan.appendChild(cancelBtn);
+
+      div.appendChild(input);
+      div.appendChild(btnSpan);
+
       setTimeout(() => {
-        const input = document.getElementById(`rename-input-${name}`);
-        if (input) {
-          input.focus();
-          input.select();
-          input.addEventListener('keydown', async e => {
-            if (e.key === 'Enter') {
-              await saveRenamedSession(name, input.value.trim());
-            } else if (e.key === 'Escape') {
-              renamingSession = null;
-              refreshUI();
-            }
-          });
-        }
+        input.focus();
+        input.select();
+        input.addEventListener('keydown', async e => {
+          if (e.key === 'Enter') {
+            await saveRenamedSession(name, input.value.trim());
+          } else if (e.key === 'Escape') {
+            renamingSession = null;
+            refreshUI();
+          }
+        });
       }, 0);
     } else {
-      // Render normal UI
-      div.innerHTML = `
-        <span class="session-name-display">
-          <span title="${name}">${name}</span>
-          <button class="icon-btn" data-action="edit" data-name="${name}" title="Rename">
-            <svg viewBox="0 0 16 16" fill="none"><path d="M12.3 3.7l-1-1a1 1 0 0 0-1.4 0L4 8.6V12h3.4l5.9-5.9a1 1 0 0 0 0-1.4z" stroke="#222" stroke-width="1.2" fill="#fbbf24"/></svg>
-          </button>
-        </span>
-        <span>
-          <button data-action="restore" data-name="${name}">Restore</button>
-          <button data-action="delete" data-name="${name}">Delete</button>
-        </span>
-      `;
+      // Normal UI
+      const nameSpan = document.createElement('span');
+      nameSpan.className = 'session-name-display';
+
+      const nameText = document.createElement('span');
+      nameText.textContent = name;
+      nameText.title = name;
+
+      const editBtn = document.createElement('button');
+      editBtn.className = 'icon-btn';
+      editBtn.dataset.action = "edit";
+      editBtn.dataset.name = name;
+      editBtn.title = "Rename";
+      editBtn.appendChild(createSVGIcon("edit"));
+
+      nameSpan.appendChild(nameText);
+      nameSpan.appendChild(editBtn);
+
+      const btnSpan = document.createElement('span');
+
+      const restoreBtn = document.createElement('button');
+      restoreBtn.dataset.action = "restore";
+      restoreBtn.dataset.name = name;
+      restoreBtn.textContent = "Restore";
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.dataset.action = "delete";
+      deleteBtn.dataset.name = name;
+      deleteBtn.textContent = "Delete";
+
+      btnSpan.appendChild(restoreBtn);
+      btnSpan.appendChild(deleteBtn);
+
+      div.appendChild(nameSpan);
+      div.appendChild(btnSpan);
     }
     container.appendChild(div);
   });

@@ -108,6 +108,13 @@ Add these PNGs to your project root.
         "16": "icons/icon16.png",
         "48": "icons/icon48.png",
         "128": "icons/icon128.png"
+    },
+    "browser_specific_settings":
+    {
+        "gecko":
+        {
+            "id": "aaossa.dev@gmail.com"
+        }
     }
 }
 ```
