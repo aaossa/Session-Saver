@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Session Saver</title>
+  <style>
+    body { font-family: sans-serif; min-width: 300px; }
+    .tab-list { max-height: 120px; overflow: auto; border: 1px solid #ddd; margin-bottom: 10px; }
+    .session-list { max-height: 150px; overflow: auto; border: 1px solid #ddd; }
+    .session { display: flex; justify-content: space-between; }
+    button { margin-left: 5px; }
+  </style>
+</head>
+<body>
+  <h3>Save Session</h3>
+  <input id="sessionName" placeholder="Session name" />
+  <div class="tab-list" id="tabs"></div>
+  <button id="saveBtn">Save Selected Tabs</button>
+  <h3>Saved Sessions</h3>
+  <div class="session-list" id="sessions"></div>
+  <script src="popup.js"></script>
+</body>
+</html>
