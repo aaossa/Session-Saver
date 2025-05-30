@@ -4,11 +4,123 @@
   <meta charset="utf-8" />
   <title>Session Saver</title>
   <style>
-    body { font-family: sans-serif; min-width: 300px; }
-    .tab-list { max-height: 120px; overflow: auto; border: 1px solid #ddd; margin-bottom: 10px; }
-    .session-list { max-height: 150px; overflow: auto; border: 1px solid #ddd; }
-    .session { display: flex; justify-content: space-between; }
-    button { margin-left: 5px; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      min-width: 320px;
+      background: #f9fbfc;
+      color: #222;
+      margin: 0;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+    h3 {
+      margin: 16px 0 8px 0;
+      font-size: 1.1em;
+      color: #2563eb;
+      letter-spacing: 0.5px;
+    }
+    input[type='text'], #sessionName {
+      width: 100%;
+      padding: 7px 10px;
+      margin-bottom: 10px;
+      font-size: 1em;
+      border: 1px solid #d1d5db;
+      border-radius: 5px;
+      box-sizing: border-box;
+      outline: none;
+      transition: border 0.2s;
+      background: #fff;
+    }
+    input[type='text']:focus, #sessionName:focus {
+      border: 1.5px solid #2563eb;
+    }
+    .tab-list, .session-list {
+      max-height: 120px;
+      overflow: auto;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      padding: 8px 0;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+    .tab-list > div, .session-list > .session {
+      padding: 4px 12px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .tab-list > div:last-child, .session-list > .session:last-child {
+      border-bottom: none;
+    }
+    .tab-list label {
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      cursor: pointer;
+      font-size: 0.97em;
+      color: #374151;
+    }
+    .tab-list input[type='checkbox'] {
+      margin-right: 8px;
+      accent-color: #2563eb;
+    }
+    .session {
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.99em;
+      gap: 4px;
+    }
+    .session span:first-child {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #1e293b;
+    }
+    .session button {
+      background: #2563eb;
+      border: none;
+      color: #fff;
+      padding: 4px 11px;
+      border-radius: 5px;
+      font-size: 0.95em;
+      margin-left: 4px;
+      cursor: pointer;
+      transition: background 0.18s, box-shadow 0.18s;
+      box-shadow: 0 1px 2px rgba(37,99,235,0.07);
+    }
+    .session button[data-action="delete"] {
+      background: #ef4444;
+    }
+    .session button:hover {
+      filter: brightness(1.08);
+      box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+    }
+    #saveBtn {
+      width: 100%;
+      background: linear-gradient(90deg, #2563eb, #60a5fa);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+      font-weight: 500;
+      padding: 8px 0;
+      margin-bottom: 10px;
+      margin-top: 4px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.07);
+      transition: background 0.15s, box-shadow 0.15s;
+    }
+    #saveBtn:hover {
+      background: linear-gradient(90deg, #1d4ed8, #2563eb);
+      box-shadow: 0 4px 12px rgba(37,99,235,0.13);
+    }
+    @media (max-width: 400px) {
+      body { padding: 8px; min-width: 200px; }
+      h3 { font-size: 1em; }
+    }
   </style>
 </head>
 <body>
