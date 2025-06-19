@@ -92,7 +92,7 @@ Add these PNGs to your project root.
 {
     "manifest_version": 3,
     "name": "Session Saver",
-    "version": "1.0",
+    "version": "1.1",
     "description": "Save and restore multiple tab sessions, choosing which URLs to include.",
     "permissions":
     [
