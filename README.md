@@ -48,9 +48,13 @@
 
 ```
 /
-├── popup.html         # Popup UI
-├── popup.js           # Popup logic
 ├── manifest.json      # Extension manifest
+├── popup              # Popup folder
+    ├── popup.html         # Popup UI
+    ├── popup.js           # Popup logic
+├── options              # Options folder
+    ├── options.html         # Options UI
+    ├── options.js           # Options logic
 ├── icons              # Icons folder
     ├── icon.svg           # Source logo (SVG, not used directly in manifest)
     ├── icon16.png         # 16x16 icon (used in browser toolbar)
@@ -97,7 +101,7 @@ Add these PNGs to your project root.
     ],
     "action":
     {
-        "default_popup": "popup.html",
+        "default_popup": "popup/popup.html",
         "default_icon":
         {
             "16": "icons/icon16.png",
@@ -105,7 +109,7 @@ Add these PNGs to your project root.
             "128": "icons/icon128.png"
         }
     },
-    "options_page": "options.html",
+    "options_page": "options/options.html",
     "icons":
     {
         "16": "icons/icon16.png",
